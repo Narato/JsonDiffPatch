@@ -18,31 +18,33 @@ namespace JsonDiffPatch
             return path + "/" + extension;
         }
 
-        private static Operation Build(string op, string path, string key, JToken value)
+        private static Operation Build(string op, string path, string key, JToken value, JToken oldValue)
         {
             if (string.IsNullOrEmpty(key))
                 return
                     Operation.Parse("{ 'op' : '" + op + "' , path: '" + path + "', value: " +
-                                    (value == null ? "null" : value.ToString(Formatting.None)) + "}");
+                                    (value == null ? "null" : value.ToString(Formatting.None)) +
+                                    ", oldvalue: " + (oldValue == null ? "null" : oldValue.ToString(Formatting.None)) + "}");
             else
                 return
                     Operation.Parse("{ op : '" + op + "' , path : '" + Extend(path, key) + "' , value : " +
-                                    (value == null ? "null" : value.ToString(Formatting.None)) + "}");
+                                    (value == null ? "null" : value.ToString(Formatting.None)) +
+                                    ", oldvalue: " + (oldValue == null ? "null" : oldValue.ToString(Formatting.None)) + "}");
         }
 
         internal static Operation Add(string path, string key, JToken value)
         {
-            return Build("add", path, key, value);
+            return Build("add", path, key, value, "");
         }
 
-        internal static Operation Remove(string path, string key)
+        internal static Operation Remove(string path, string key, JToken oldValue)
         {
-            return Build("remove", path, key, null);
+            return Build("remove", path, key, null, oldValue);
         }
 
-        internal static Operation Replace(string path, string key, JToken value)
+        internal static Operation Replace(string path, string key, JToken value, JToken oldValue)
         {
-            return Build("replace", path, key, value);
+            return Build("replace", path, key, value, oldValue);
         }
 
         internal static IEnumerable<Operation> CalculatePatch(JToken left, JToken right, bool useIdToDetermineEquality,
@@ -50,7 +52,7 @@ namespace JsonDiffPatch
         {
             if (left.Type != right.Type)
             {
-                yield return JsonDiffer.Replace(path, "", right);
+                yield return JsonDiffer.Replace(path, "", right, left);
                 yield break;
             }
 
@@ -63,7 +65,7 @@ namespace JsonDiffPatch
                     var add = operation as AddOperation;
                     if (prevRemove != null && add != null && add.Path.ToString() == prevRemove.Path.ToString())
                     {
-                        yield return Replace(add.Path.ToString(), "", add.Value);
+                        yield return Replace(add.Path.ToString(), "", add.Value, add.OldValue);
                         prev = null;
                     }
                     else
@@ -84,7 +86,7 @@ namespace JsonDiffPatch
 
                 foreach (var removed in lprops.Except(rprops, MatchesKey.Instance))
                 {
-                    yield return JsonDiffer.Remove(path, removed.Key);
+                    yield return JsonDiffer.Remove(path, removed.Key, removed.Value);//todo check if this is correct
                 }
 
                 foreach (var added in rprops.Except(lprops, MatchesKey.Instance))
@@ -110,7 +112,7 @@ namespace JsonDiffPatch
                 if (left.ToString() == right.ToString())
                     yield break;
                 else
-                    yield return JsonDiffer.Replace(path, "", right);
+                    yield return JsonDiffer.Replace(path, "", right, left);
             }
         }
 
@@ -161,7 +163,8 @@ namespace JsonDiffPatch
                 yield return new ReplaceOperation()
                 {
                     Path = new JsonPointer(path),
-                    Value = new JArray(array2)
+                    Value = new JArray(array2),
+                    OldValue = new JArray(array1)
                 };
                 yield break;
             }
@@ -173,6 +176,7 @@ namespace JsonDiffPatch
             {
                 yield return new RemoveOperation()
                 {
+                    OldValue = jToken,
                     Path = new JsonPointer(path + "/" + (commonHead ))
                 };
             }

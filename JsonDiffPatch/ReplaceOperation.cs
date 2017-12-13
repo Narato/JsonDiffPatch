@@ -14,8 +14,8 @@ namespace JsonDiffPatch
 
             WriteOp(writer, "replace");
             WritePath(writer, Path);
+            WriteOldValue(writer, OldValue);
             WriteValue(writer, Value);
-
             writer.WriteEndObject();
         }
 
@@ -23,6 +23,7 @@ namespace JsonDiffPatch
         {
             Path = new JsonPointer((string)jOperation.GetValue("path"));
             Value = jOperation.GetValue("value");
+            OldValue = jOperation.GetValue("oldvalue");
         }
     }
 }

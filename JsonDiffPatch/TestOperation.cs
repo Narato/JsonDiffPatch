@@ -14,6 +14,7 @@ namespace JsonDiffPatch
 
             WriteOp(writer, "test");
             WritePath(writer, Path);
+            WriteOldValue(writer, OldValue);
             WriteValue(writer, Value);
 
             writer.WriteEndObject();

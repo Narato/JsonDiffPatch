@@ -13,13 +13,15 @@ namespace JsonDiffPatch
 
             WriteOp(writer, "remove");
             WritePath(writer, Path);
+            WriteOldValue(writer, OldValue);
 
             writer.WriteEndObject();
         }
 
         public override void Read(JObject jOperation)
         {
-            Path = new JsonPointer((string)jOperation.GetValue("path"));   
+            Path = new JsonPointer((string)jOperation.GetValue("path"));
+            OldValue = jOperation.GetValue("oldvalue");
         }
     }
 }
