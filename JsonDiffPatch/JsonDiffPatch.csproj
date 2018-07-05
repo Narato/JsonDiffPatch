@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFrameworks>netstandard1.4;net452;netcoreapp1.1</TargetFrameworks>
+    <TargetFrameworks>netstandard1.4;net452;netcoreapp1.1;net45;net46</TargetFrameworks>
     <Description>Library for diffing and RFC 6902 patching json.net objects, with added functionality to add oldvalues to operations - forked from  mcintyre321/JsonDiffPatch</Description>
     <PackageLicenseUrl>https://github.com/mcintyre321/JsonDiffPatch/blob/master/License.txt</PackageLicenseUrl>
     <Copyright />
@@ -9,7 +9,7 @@
     <AssemblyName>Narato.JsonDiffPatch</AssemblyName>
     <PackageId>Narato.JsonDiffPatch</PackageId>
     <GeneratePackageOnBuild>True</GeneratePackageOnBuild>
-    <PackageVersion>1.0.8</PackageVersion>
+    <PackageVersion>1.0.9</PackageVersion>
   </PropertyGroup>
 
   <ItemGroup>
