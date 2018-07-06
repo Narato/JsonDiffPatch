@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27004.2010
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonDiffPatch", "JsonDiffPatch\JsonDiffPatch.csproj", "{F28B8328-85BE-4048-AA16-0C069095FB1F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "JsonDiffPatch", "src\JsonDiffPatch\JsonDiffPatch.csproj", "{F28B8328-85BE-4048-AA16-0C069095FB1F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonDiffXUnitTests", "JsonDiffXUnitTests\JsonDiffXUnitTests.csproj", "{15E7ABB3-5632-41F5-8B6D-25FF318D9A0F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "JsonDiffXUnitTests", "test\JsonDiffXUnitTests\JsonDiffXUnitTests.csproj", "{15E7ABB3-5632-41F5-8B6D-25FF318D9A0F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
